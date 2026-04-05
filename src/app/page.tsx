@@ -261,14 +261,14 @@ export default function Home() {
             {brandImages.map((brand) => (
               <div
                 key={brand.src}
-                className="flex items-center justify-center rounded-xl border border-[#c8ff00]/5 bg-[#0f1210]/50 p-6 transition-all duration-300 hover:border-[#c8ff00]/20 hover:bg-[#0f1210]"
+                className="flex items-center justify-center rounded-xl border border-[#c8ff00]/10 bg-white/95 p-6 transition-all duration-300 hover:border-[#c8ff00]/30 hover:bg-white"
               >
                 <Image
                   src={brand.src}
                   alt={brand.alt}
                   width={200}
                   height={100}
-                  className="h-auto max-h-20 w-full object-contain opacity-80 brightness-0 invert transition-opacity duration-300 hover:opacity-100"
+                  className="h-auto max-h-20 w-full object-contain opacity-90 transition-opacity duration-300 hover:opacity-100"
                 />
               </div>
             ))}

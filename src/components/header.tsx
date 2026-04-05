@@ -85,7 +85,7 @@ export default function Header() {
                 alt="RadSchlo\u00DF"
                 width={140}
                 height={40}
-                className="h-8 w-auto md:h-10"
+                className="h-8 w-auto brightness-0 invert md:h-10"
                 priority
               />
             </Link>
