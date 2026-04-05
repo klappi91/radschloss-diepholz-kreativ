@@ -266,9 +266,9 @@ export default function Home() {
                 <Image
                   src={brand.src}
                   alt={brand.alt}
-                  width={160}
-                  height={80}
-                  className="h-auto max-h-16 w-auto object-contain opacity-70 brightness-0 invert transition-opacity duration-300 hover:opacity-100"
+                  width={200}
+                  height={100}
+                  className="h-auto max-h-20 w-full object-contain opacity-80 brightness-0 invert transition-opacity duration-300 hover:opacity-100"
                 />
               </div>
             ))}
