@@ -1,19 +1,16 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, MessageCircle } from "lucide-react";
 import { navigation, contactInfo } from "@/data/products";
-import gsap from "gsap";
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const navLinksRef = useRef<HTMLDivElement>(null);
 
   // Track scroll position for header background
   useEffect(() => {
@@ -22,29 +19,6 @@ export default function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // Animate mobile overlay entrance
-  useEffect(() => {
-    if (mobileOpen && overlayRef.current && navLinksRef.current) {
-      gsap.fromTo(
-        overlayRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.3, ease: "power2.out" }
-      );
-      gsap.fromTo(
-        navLinksRef.current.children,
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.4,
-          ease: "power3.out",
-          stagger: 0.06,
-          delay: 0.15,
-        }
-      );
-    }
-  }, [mobileOpen]);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -159,26 +133,26 @@ export default function Header() {
       {/* Mobile full-screen overlay */}
       {mobileOpen && (
         <div
-          ref={overlayRef}
-          className="fixed inset-0 z-40 flex flex-col bg-[#0f1210]/98 backdrop-blur-sm lg:hidden"
+          className="animate-fadeIn fixed inset-0 z-40 flex flex-col bg-[#0f1210]/98 backdrop-blur-sm lg:hidden"
         >
           {/* Spacer for header height */}
           <div className="h-16" />
 
           <div className="flex flex-1 flex-col items-center justify-center px-6">
-            <nav ref={navLinksRef} className="flex flex-col items-center gap-2">
-              {navigation.map((item) => {
+            <nav className="flex flex-col items-center gap-2">
+              {navigation.map((item, index) => {
                 const isActive = pathname === item.href;
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
-                    className={`font-heading text-2xl font-bold uppercase tracking-wider transition-colors sm:text-3xl ${
+                    className={`animate-slideUp font-heading text-2xl font-bold uppercase tracking-wider transition-colors sm:text-3xl ${
                       isActive
                         ? "text-[#c8ff00]"
                         : "text-[#f5f5f0] hover:text-[#c8ff00]"
                     }`}
+                    style={{ animationDelay: `${150 + index * 60}ms` }}
                   >
                     {item.label}
                     {isActive && (

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import gsap from "gsap";
 
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
@@ -11,64 +10,76 @@ export default function Hero() {
   const ctaRef = useRef<HTMLDivElement>(null);
   const chevronRef = useRef<HTMLDivElement>(null);
   const line2Ref = useRef<HTMLSpanElement>(null);
+  const cleanupRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    let cancelled = false;
 
-      // Animate first line words
-      tl.from("[data-hero-word]", {
-        y: 80,
-        opacity: 0,
-        duration: 0.9,
-        stagger: 0.08,
-      });
+    import("gsap").then(({ default: gsap }) => {
+      if (cancelled) return;
 
-      // Animate second line
-      tl.from(
-        line2Ref.current,
-        {
-          y: 60,
+      const ctx = gsap.context(() => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        // Animate first line words
+        tl.from("[data-hero-word]", {
+          y: 80,
           opacity: 0,
-          duration: 0.8,
-        },
-        "-=0.2"
-      );
+          duration: 0.9,
+          stagger: 0.08,
+        });
 
-      // Subtitle
-      tl.from(
-        subtitleRef.current,
-        {
-          y: 30,
-          opacity: 0,
-          duration: 0.6,
-        },
-        "-=0.3"
-      );
+        // Animate second line
+        tl.from(
+          line2Ref.current,
+          {
+            y: 60,
+            opacity: 0,
+            duration: 0.8,
+          },
+          "-=0.2"
+        );
 
-      // CTA buttons
-      tl.from(
-        "[data-hero-cta]",
-        {
-          y: 20,
-          opacity: 0,
-          duration: 0.5,
-          stagger: 0.12,
-        },
-        "-=0.2"
-      );
+        // Subtitle
+        tl.from(
+          subtitleRef.current,
+          {
+            y: 30,
+            opacity: 0,
+            duration: 0.6,
+          },
+          "-=0.3"
+        );
 
-      // Chevron bounce (infinite)
-      gsap.to(chevronRef.current, {
-        y: 12,
-        duration: 1.2,
-        ease: "power1.inOut",
-        repeat: -1,
-        yoyo: true,
-      });
-    }, heroRef);
+        // CTA buttons
+        tl.from(
+          "[data-hero-cta]",
+          {
+            y: 20,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.12,
+          },
+          "-=0.2"
+        );
 
-    return () => ctx.revert();
+        // Chevron bounce (infinite)
+        gsap.to(chevronRef.current, {
+          y: 12,
+          duration: 1.2,
+          ease: "power1.inOut",
+          repeat: -1,
+          yoyo: true,
+        });
+      }, heroRef);
+
+      cleanupRef.current = () => ctx.revert();
+    });
+
+    return () => {
+      cancelled = true;
+      cleanupRef.current?.();
+    };
   }, []);
 
   const line1Words = ["Wenn", "Leidenschaft", "zum", "Beruf", "wird..."];
@@ -120,6 +131,7 @@ export default function Hero() {
           <span className="block overflow-hidden">
             <span
               ref={line2Ref}
+              data-hero-line2
               className="mt-2 block text-[0.65em] font-medium italic text-[#f5f5f0]/80 sm:mt-3"
             >
               ...ist es das gr&ouml;&szlig;te Gl&uuml;ck!
@@ -130,6 +142,7 @@ export default function Hero() {
         {/* Subtitle */}
         <p
           ref={subtitleRef}
+          data-hero-subtitle
           className="max-w-xl font-sans text-lg font-light tracking-wide text-[#f5f5f0]/60 sm:text-xl md:text-2xl"
         >
           Erstklassiger Service aus Meisterhand
