@@ -22,44 +22,32 @@ export default function Hero() {
         const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
         // Animate first line words
-        tl.from("[data-hero-word]", {
-          y: 80,
-          opacity: 0,
-          duration: 0.9,
-          stagger: 0.08,
-        });
+        tl.fromTo("[data-hero-word]",
+          { y: 80, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.9, stagger: 0.08 }
+        );
 
         // Animate second line
-        tl.from(
+        tl.fromTo(
           line2Ref.current,
-          {
-            y: 60,
-            opacity: 0,
-            duration: 0.8,
-          },
+          { y: 60, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8 },
           "-=0.2"
         );
 
         // Subtitle
-        tl.from(
+        tl.fromTo(
           subtitleRef.current,
-          {
-            y: 30,
-            opacity: 0,
-            duration: 0.6,
-          },
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6 },
           "-=0.3"
         );
 
         // CTA buttons
-        tl.from(
+        tl.fromTo(
           "[data-hero-cta]",
-          {
-            y: 20,
-            opacity: 0,
-            duration: 0.5,
-            stagger: 0.12,
-          },
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.5, stagger: 0.12 },
           "-=0.2"
         );
 
